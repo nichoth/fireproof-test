@@ -6,6 +6,7 @@ import {
 } from '@nichoth/components/htm/button-outline'
 import { createDebug } from '@nichoth/debug'
 import ky from 'ky'
+import { fireproof } from 'use-fireproof'
 import { State } from './state.js'
 import Router from './routes/index.js'
 import '@nichoth/components/button-outline.css'
@@ -14,6 +15,29 @@ import './style.css'
 const router = Router()
 const state = State()
 const debug = createDebug()
+
+const db = fireproof('my-app-name')
+
+const { id } = await db.put({
+    _id: 'three-thousand',
+    name: 'André',
+    age: 47
+})
+
+const unsub = db.subscribe((updates) => {
+    // updates is an array of documents
+    console.log('got an update', updates)
+    // @ts-ignore
+    window.update = updates
+})
+
+// @ts-ignore
+window.db = db
+
+// get a document
+const doc = await db.get(id)
+
+debug('got the doc', doc)
 
 // example of calling our API
 const json = await ky.get('/api/example').json()
