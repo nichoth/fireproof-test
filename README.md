@@ -6,3 +6,10 @@ Trying fireproof
 [see the tutorial](https://use-fireproof.com/docs/react-tutorial)
 
 [or the docs](https://use-fireproof.com/docs/database-api/basics)
+
+## develop
+
+```sh
+npm start
+```
+

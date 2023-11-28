@@ -18,17 +18,17 @@ const debug = createDebug()
 
 const db = fireproof('my-app-name')
 
+const unsub = db.subscribe((updates) => {
+    // updates is an array of documents
+    debug('got an update', updates)
+    // @ts-ignore
+    window.update = updates
+})
+
 const { id } = await db.put({
     _id: 'three-thousand',
     name: 'André',
     age: 47
-})
-
-const unsub = db.subscribe((updates) => {
-    // updates is an array of documents
-    console.log('got an update', updates)
-    // @ts-ignore
-    window.update = updates
 })
 
 // @ts-ignore
