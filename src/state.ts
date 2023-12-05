@@ -1,20 +1,47 @@
 import { Signal, signal } from '@preact/signals'
+import { fireproof } from 'use-fireproof'
 import Route from 'route-event'
+import Debug from '@nichoth/debug'
+const debug = Debug()
+
+type Doc = {
+    _id?:string;
+    count:number;
+}
 
 /**
  * Setup any state
  *   - routes
  */
-export function State ():{
+export async function State ():Promise<{
     route:Signal<string>;
     count:Signal<number>;
+    _db:ReturnType<typeof fireproof>
     _setRoute:(path:string)=>void;
-} {  // eslint-disable-line indent
+}> {  // eslint-disable-line indent
     const onRoute = Route()
+
+    const db = fireproof('my-app-name')
+
+    const unsub = db.subscribe((updates) => {
+        // updates is an array of documents
+        debug('**got an update**', updates)
+    })
+
+    // get a document
+    let doc:Doc
+    try {
+        doc = await db.get('count') as Doc
+    } catch (err) {
+        debug('**errrrr**', err)
+        doc = { _id: 'count', count: 0 }
+        await db.put(doc)
+    }
 
     const state = {
         _setRoute: onRoute.setRoute.bind(onRoute),
-        count: signal<number>(0),
+        _db: db,
+        count: signal<number>(doc.count),
         route: signal<string>(location.pathname + location.search)
     }
 
@@ -30,10 +57,12 @@ export function State ():{
     return state
 }
 
-State.Increase = function (state:ReturnType<typeof State>) {
+State.Increase = async function (state:Awaited<ReturnType<typeof State>>) {
+    const doc = await state._db.get('count') as Doc
+    await state._db.put({ _id: 'count', count: doc.count + 1 })
     state.count.value++
 }
 
-State.Decrease = function (state:ReturnType<typeof State>) {
+State.Decrease = function (state:Awaited<ReturnType<typeof State>>) {
     state.count.value--
 }
