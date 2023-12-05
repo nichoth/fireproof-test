@@ -63,6 +63,8 @@ State.Increase = async function (state:Awaited<ReturnType<typeof State>>) {
     state.count.value++
 }
 
-State.Decrease = function (state:Awaited<ReturnType<typeof State>>) {
+State.Decrease = async function (state:Awaited<ReturnType<typeof State>>) {
+    const doc = await state._db.get('count') as Doc
+    await state._db.put({ _id: 'count', count: doc.count - 1 })
     state.count.value--
 }
