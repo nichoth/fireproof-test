@@ -22,23 +22,21 @@ export async function State ():Promise<{
     _setRoute:(path:string)=>void;
 }> {  // eslint-disable-line indent
     const onRoute = Route()
-
     const db = fireproof('my-app-name')
-    // const db = new Database('my-app-name')
 
-    const unsub = db.subscribe((changes) => {
-        // updates is an array of documents
-        debug('**got an update**', changes)
-    })
-
-    // get a document
     let doc:Doc
     try {
         doc = await db.get('count') as Doc
     } catch (err) {
-        debug('**errrrr**', err)
-        doc = { _id: 'count', count: 0 }
-        await db.put(doc)
+        debug(err)
+        if (String(err).includes('Getting from an empty database')) {
+            console.log('empty DB')
+            doc = { _id: 'count', count: 0 }
+            await db.put(doc)
+        } else {
+            doc = { _id: 'count', count: 0 }
+            await db.put(doc)
+        }
     }
 
     const state = {
@@ -47,6 +45,17 @@ export async function State ():Promise<{
         count: signal<number>(doc.count),
         route: signal<string>(location.pathname + location.search)
     }
+
+    // @ts-ignore
+    window.state = state
+
+    db.subscribe((changes) => {
+        const last = changes.pop()
+        debug('**got an update**', last)
+        if (last!._id === 'count') {
+            state.count.value = last!.count as number
+        }
+    }, true)
 
     /**
      * set the app state to match the browser URL
@@ -63,11 +72,9 @@ export async function State ():Promise<{
 State.Increase = async function (state:Awaited<ReturnType<typeof State>>) {
     const doc = await state._db.get('count') as Doc
     await state._db.put({ _id: 'count', count: doc.count + 1 })
-    state.count.value++
 }
 
 State.Decrease = async function (state:Awaited<ReturnType<typeof State>>) {
     const doc = await state._db.get('count') as Doc
     await state._db.put({ _id: 'count', count: doc.count - 1 })
-    state.count.value--
 }

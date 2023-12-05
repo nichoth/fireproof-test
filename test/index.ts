@@ -9,7 +9,7 @@ test('subscribe', async t => {
         unsub()
         t.ok(changes, 'should get changes')
         t.ok(changes.length, 'changes is not empty')
-    })
+    }, true)
 
     await db.put({ _id: 'count', count: 1 })
 })
