@@ -1,6 +1,6 @@
 import { Signal, signal } from '@preact/signals'
 import { fireproof } from 'use-fireproof'
-// import { Database } from 'use-fireproof'
+import { connect } from '@fireproof/partykit'
 import Route from 'route-event'
 import Debug from '@nichoth/debug'
 const debug = Debug()
@@ -17,12 +17,15 @@ type Doc = {
 export async function State ():Promise<{
     route:Signal<string>;
     count:Signal<number>;
-    // _db:InstanceType<typeof Database>
     _db:ReturnType<typeof fireproof>
     _setRoute:(path:string)=>void;
 }> {  // eslint-disable-line indent
     const onRoute = Route()
     const db = fireproof('my-app-name')
+
+    const cx = connect.partykit(db)
+
+    await cx.ready
 
     let doc:Doc
     try {

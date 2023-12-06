@@ -13,3 +13,9 @@ Trying fireproof
 npm start
 ```
 
+## docs
+
+### multi device
+
+[Call `db.connect`](https://use-fireproof.com/docs/connect#easy-start)
+
