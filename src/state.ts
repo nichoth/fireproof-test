@@ -23,6 +23,8 @@ export async function State ():Promise<{
     const onRoute = Route()
     const db = fireproof('my-app-name')
 
+    // pass in the partykit host here
+    // or, by default, uses localhost:1999 -- the default partykit address
     const cx = connect.partykit(db)
 
     await cx.ready

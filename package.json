@@ -7,7 +7,7 @@
     "lint": "standardx -v \"./**/*.ts\"",
     "test": "esbuild test/index.ts --bundle | tape-run | tap-arc",
     "build": "mkdir -p ./public && rm -rf ./public/* && vite build",
-    "start": "concurrently --kill-others \"npx ntl functions:serve --port=9999 --debug\" \"npx vite\"",
+    "start": "concurrently --kill-others \"npx ntl functions:serve --port=9999 --debug\" \"npx partykit dev\" \"npx vite\"",
     "preversion": "npm run lint",
     "version": "auto-changelog --template keepachangelog --breaking-pattern 'BREAKING CHANGE' && git add CHANGELOG.md",
     "postversion": "git push && git push --tags",

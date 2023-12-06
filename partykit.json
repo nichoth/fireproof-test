@@ -1,5 +1,8 @@
 {
   "name": "fireproof-test",
   "main": "party/index.ts",
-  "compatibilityDate": "2023-12-05"
+  "compatibilityDate": "2023-12-05",
+  "parties": {
+    "fireproof": "node_modules/@fireproof/partykit/src/server.ts"
+  }
 }
