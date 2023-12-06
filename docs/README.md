@@ -16,3 +16,5 @@ npx partykit@latest init
 ```
 
 This creates a basic partykit config and server JS file.
+
+[See docs about fireproof + partykit](https://github.com/fireproof-storage/fireproof/blob/main/packages/connect-partykit/README.md)
