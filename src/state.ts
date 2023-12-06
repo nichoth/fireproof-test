@@ -33,12 +33,12 @@ export async function State ():Promise<{
     try {
         doc = await db.get('count') as Doc
     } catch (err) {
-        debug(err)
         if (String(err).includes('Getting from an empty database')) {
-            console.log('empty DB')
+            debug('empty DB')
             doc = { _id: 'count', count: 0 }
             await db.put(doc)
         } else {
+            debug('error', err)
             doc = { _id: 'count', count: 0 }
             await db.put(doc)
         }
