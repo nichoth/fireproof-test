@@ -17,11 +17,17 @@ type Doc = {
 export async function State ():Promise<{
     route:Signal<string>;
     count:Signal<number>;
-    _db:ReturnType<typeof fireproof>
+    _db:ReturnType<typeof fireproof>;
     _setRoute:(path:string)=>void;
 }> {  // eslint-disable-line indent
     const onRoute = Route()
     const db = fireproof('my-app-name')
+
+    /**
+     * @TODO
+     * What does this do?
+     */
+    // connect.partykitNetlify(db)
 
     // pass in the partykit host here
     // or, by default, uses localhost:1999 -- the default partykit address

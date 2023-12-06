@@ -18,3 +18,16 @@ npx partykit@latest init
 This creates a basic partykit config and server JS file.
 
 [See docs about fireproof + partykit](https://github.com/fireproof-storage/fireproof/blob/main/packages/connect-partykit/README.md)
+
+
+## sync vs replication
+
+[See replication docs](https://use-fireproof.com/docs/database-api/replication/)
+
+> Replication is distinct from database-level peer-to-peer realtime [Sync](https://use-fireproof.com/docs/database-api/sync), which is designed to power collaborative applications. 
+
+-------
+
+## misc
+
+[See fireproof + partykit blog post](https://blog.partykit.io/posts/fireproof-database-connector)
