@@ -73,7 +73,7 @@ export async function State ():Promise<{
      */
     onRoute((path:string) => {
         // for github pages
-        const newPath = path.replace('/template-ts-preact-htm/', '/')
+        const newPath = path.replace('/fireproof-test/', '/')
         state.route.value = newPath
     })
 
